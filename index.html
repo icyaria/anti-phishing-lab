@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Δημιουργία Εκπαιδευτικού Phishing Email</title>
+  <title>Δημιουργία Εκπαιδευτικού Email</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,7 +17,7 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -35,6 +35,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-bottom: 10px;
     }
     button:hover {
       background-color: #457b9d;
@@ -68,7 +69,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>✍️ Δημιούργησε ένα Εκπαιδευτικό Phishing Email</h2>
+    <h2>✍️ Δημιούργησε ένα Εκπαιδευτικό Email</h2>
 
     <label>Αποστολέας:</label>
     <input type="text" id="from">
@@ -82,18 +83,20 @@
     <label>Κείμενο Μηνύματος:</label>
     <textarea id="body" rows="5"></textarea>
 
-    <label>Εικόνα (π.χ. ψεύτικο λογότυπο):</label>
+    <label>Εικόνα (π.χ. λογότυπο):</label>
     <input type="file" id="image" accept="image/*">
-
-    <label>Ψεύτικος Σύνδεσμος (σταθερός):</label>
-    <input type="text" value="suspicious.html" readonly>
 
     <label>Κείμενο Κουμπιού:</label>
     <input type="text" id="buttonText" placeholder="Πατήστε εδώ...">
 
-    <button onclick="generateEmail()">Προβολή Email</button>
+    <label>Τύπος Email:</label>
+    <select id="emailType">
+      <option value="suspicious.html">Ύποπτο (Phishing)</option>
+      <option value="safe.html">Ασφαλές Email</option>
+    </select>
 
-    <button onclick="finishEmail()" style="background-color:#2a9d8f; margin-top:10px;">Τέλος</button>
+    <button onclick="generateEmail()">Προβολή Email</button>
+    <button onclick="finishEmail()" style="background-color:#2a9d8f;">Τέλος</button>
 
     <div class="preview" id="preview" style="display: none;">
       <h3>📬 Προεπισκόπηση Email</h3>
@@ -102,7 +105,15 @@
       <p><strong>Θέμα:</strong> <span id="pSubject"></span></p>
       <p><strong>Μήνυμα:</strong><br><span id="pBody"></span></p>
       <div id="pImageContainer"></div>
-      <p><a href="suspicious.html" id="pLink" target="_blank"><span id="pButton" class="btn-link">Πατήστε εδώ</span></a></p>
+      <p>
+        <a href="suspicious.html" id="pLink" target="_blank" title="Θα μεταφερθείτε στον σύνδεσμο του email">
+          <span id="pButton" class="btn-link">Πατήστε εδώ</span>
+        </a>
+      </p>
+      <p style="font-size: 13px; color: #888;">
+        🔗 <strong>Ο σύνδεσμος οδηγεί σε:</strong> 
+        <code id="realLink" style="background:#f4f4f4; padding: 2px 6px; border-radius: 5px;"></code>
+      </p>
     </div>
   </div>
 
@@ -110,15 +121,21 @@
     function generateEmail() {
       document.getElementById("preview").style.display = "block";
 
-      document.getElementById("pFrom").textContent = document.getElementById("from").value;
-      document.getElementById("pTo").textContent = document.getElementById("to").value;
-      document.getElementById("pSubject").textContent = document.getElementById("subject").value;
-      document.getElementById("pBody").innerHTML = document.getElementById("body").value.replace(/\n/g, "<br>");
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const subject = document.getElementById("subject").value;
+      const body = document.getElementById("body").value.replace(/\n/g, "<br>");
+      const buttonText = document.getElementById("buttonText").value;
+      const linkTarget = document.getElementById("emailType").value;
 
-      // Ενημερώνει το κουμπί με το custom κείμενο
-      document.getElementById("pButton").textContent = document.getElementById("buttonText").value || "Πατήστε εδώ";
+      document.getElementById("pFrom").textContent = from;
+      document.getElementById("pTo").textContent = to;
+      document.getElementById("pSubject").textContent = subject;
+      document.getElementById("pBody").innerHTML = body;
+      document.getElementById("pButton").textContent = buttonText || "Πατήστε εδώ";
+      document.getElementById("pLink").href = linkTarget;
+      document.getElementById("realLink").textContent = linkTarget;
 
-      // Ενημερώνει την εικόνα αν υπάρχει
       const file = document.getElementById("image").files[0];
       const imgContainer = document.getElementById("pImageContainer");
       imgContainer.innerHTML = "";
@@ -132,34 +149,33 @@
         };
         reader.readAsDataURL(file);
       }
-    }  
-    
-    function finishEmail() {
-    const data = {
-      from: document.getElementById("from").value,
-      to: document.getElementById("to").value,
-      subject: document.getElementById("subject").value,
-      body: document.getElementById("body").value,
-      buttonText: document.getElementById("buttonText").value,
-    };
+    }
 
-    const file = document.getElementById("image").files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        data.imageSrc = e.target.result;
+    function finishEmail() {
+      const data = {
+        from: document.getElementById("from").value,
+        to: document.getElementById("to").value,
+        subject: document.getElementById("subject").value,
+        body: document.getElementById("body").value,
+        buttonText: document.getElementById("buttonText").value,
+        linkTarget: document.getElementById("emailType").value
+      };
+
+      const file = document.getElementById("image").files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          data.imageSrc = e.target.result;
+          localStorage.setItem("finalEmail", JSON.stringify(data));
+          window.open("final.html", "_blank");
+        };
+        reader.readAsDataURL(file);
+      } else {
+        data.imageSrc = null;
         localStorage.setItem("finalEmail", JSON.stringify(data));
         window.open("final.html", "_blank");
-      };
-      reader.readAsDataURL(file);
-    } else {
-      data.imageSrc = null;
-      localStorage.setItem("finalEmail", JSON.stringify(data));
-      window.open("final.html", "_blank");
+      }
     }
-  }
-    
   </script>
-  
 </body>
 </html>
