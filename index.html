@@ -93,6 +93,8 @@
 
     <button onclick="generateEmail()">Προβολή Email</button>
 
+    <button onclick="finishEmail()" style="background-color:#2a9d8f; margin-top:10px;">Τέλος</button>
+
     <div class="preview" id="preview" style="display: none;">
       <h3>📬 Προεπισκόπηση Email</h3>
       <p><strong>Από:</strong> <span id="pFrom"></span></p>
@@ -131,6 +133,35 @@
         reader.readAsDataURL(file);
       }
     }
+    <script>
+  // (μέσα στο <script> σου, κάτω από generateEmail)
+
+  function finishEmail() {
+    const data = {
+      from: document.getElementById("from").value,
+      to: document.getElementById("to").value,
+      subject: document.getElementById("subject").value,
+      body: document.getElementById("body").value,
+      buttonText: document.getElementById("buttonText").value,
+    };
+
+    const file = document.getElementById("image").files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        data.imageSrc = e.target.result;
+        localStorage.setItem("finalEmail", JSON.stringify(data));
+        window.open("final.html", "_blank");
+      };
+      reader.readAsDataURL(file);
+    } else {
+      data.imageSrc = null;
+      localStorage.setItem("finalEmail", JSON.stringify(data));
+      window.open("final.html", "_blank");
+    }
+  }
+</script>
+
   </script>
 </body>
 </html>
