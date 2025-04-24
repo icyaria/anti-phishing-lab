@@ -132,11 +132,9 @@
         };
         reader.readAsDataURL(file);
       }
-    }
-    <script>
-  // (μέσα στο <script> σου, κάτω από generateEmail)
-
-  function finishEmail() {
+    }  
+    
+    function finishEmail() {
     const data = {
       from: document.getElementById("from").value,
       to: document.getElementById("to").value,
@@ -160,8 +158,8 @@
       window.open("final.html", "_blank");
     }
   }
-</script>
-
+    
   </script>
+  
 </body>
 </html>
