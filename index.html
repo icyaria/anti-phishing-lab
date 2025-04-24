@@ -73,7 +73,7 @@
     <input type="file" id="image" accept="image/*">
 
     <label>Ψεύτικος Σύνδεσμος:</label>
-    <input type="text" id="link" placeholder="http://...">
+    <input type="text" value="gotcha.html" readonly>
 
     <label>Κείμενο Κουμπιού:</label>
     <input type="text" id="buttonText" placeholder="Πατήστε εδώ...">
@@ -104,7 +104,7 @@
       const buttonText = document.getElementById("buttonText").value;
       const pLink = document.getElementById("pLink");
       const pButton = document.getElementById("pButton");
-      pLink.href = link || "#";
+      pLink.href = "gotcha.html";
       pButton.textContent = buttonText || "Πατήστε εδώ";
 
       const file = document.getElementById("image").files[0];
