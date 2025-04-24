@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Το Phishing Email μου</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffdf4;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h2 {
+      color: #1d3557;
+    }
+    .email-box {
+      padding: 20px;
+      background-color: #f4f6f8;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .btn-link {
+      display: inline-block;
+      background-color: #1d3557;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .btn-link:hover {
+      background-color: #457b9d;
+    }
+    img {
+      max-width: 100%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .disclaimer {
+      background-color: #fff3cd;
+      padding: 15px;
+      border-left: 5px solid #ffbf00;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-box" id="emailContent">
+    <h2>📧 Εκπαιδευτικό Phishing Email</h2>
+    <p><strong>Από:</strong> <span id="from"></span></p>
+    <p><strong>Προς:</strong> <span id="to"></span></p>
+    <p><strong>Θέμα:</strong> <span id="subject"></span></p>
+    <p><strong>Μήνυμα:</strong><br><span id="body"></span></p>
+    <div id="imageContainer"></div>
+    <p><a href="gotcha.html" target="_blank" class="btn-link" id="button">Πατήστε εδώ</a></p>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ <strong>Προσοχή:</strong> Το παραπάνω email είναι <u>απολύτως ψεύτικο</u> και δημιουργήθηκε στο πλαίσιο εκπαιδευτικής δραστηριότητας για την αναγνώριση red flags σε phishing μηνύματα. Μην προσπαθήσετε να το χρησιμοποιήσετε για κανέναν άλλο σκοπό.
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem("finalEmail") || "{}");
+    document.getElementById("from").textContent = data.from || "";
+    document.getElementById("to").textContent = data.to || "";
+    document.getElementById("subject").textContent = data.subject || "";
+    document.getElementById("body").innerHTML = (data.body || "").replace(/\n/g, "<br>");
+    document.getElementById("button").textContent = data.buttonText || "Πατήστε εδώ";
+
+    if (data.imageSrc) {
+      const img = document.createElement("img");
+      img.src = data.imageSrc;
+      document.getElementById("imageContainer").appendChild(img);
+    }
+  </script>
+</body>
+</html>
