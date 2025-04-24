@@ -104,7 +104,7 @@
       const buttonText = document.getElementById("buttonText").value;
       const pLink = document.getElementById("pLink");
       const pButton = document.getElementById("pButton");
-      pLink.href = "gotcha.html";
+      pLink.href = window.location.origin + window.location.pathname.replace("index.html", "") + "gotcha.html";
       pButton.textContent = buttonText || "Πατήστε εδώ";
 
       const file = document.getElementById("image").files[0];
