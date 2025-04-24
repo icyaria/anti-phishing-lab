@@ -51,6 +51,19 @@
       margin-top: 10px;
       border: 1px solid #ccc;
     }
+    .btn-link {
+      display: inline-block;
+      background-color: #1d3557;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-link:hover {
+      background-color: #457b9d;
+    }
   </style>
 </head>
 <body>
@@ -72,7 +85,7 @@
     <label>Εικόνα (π.χ. ψεύτικο λογότυπο):</label>
     <input type="file" id="image" accept="image/*">
 
-    <label>Ψεύτικος Σύνδεσμος:</label>
+    <label>Ψεύτικος Σύνδεσμος (σταθερός):</label>
     <input type="text" value="gotcha.html" readonly>
 
     <label>Κείμενο Κουμπιού:</label>
@@ -87,7 +100,7 @@
       <p><strong>Θέμα:</strong> <span id="pSubject"></span></p>
       <p><strong>Μήνυμα:</strong><br><span id="pBody"></span></p>
       <div id="pImageContainer"></div>
-      <p><a href="#" id="pLink" target="_blank"><button id="pButton"></button></a></p>
+      <p><a href="gotcha.html" id="pLink" target="_blank"><span id="pButton" class="btn-link">Πατήστε εδώ</span></a></p>
     </div>
   </div>
 
@@ -100,13 +113,10 @@
       document.getElementById("pSubject").textContent = document.getElementById("subject").value;
       document.getElementById("pBody").innerHTML = document.getElementById("body").value.replace(/\n/g, "<br>");
 
-      const link = document.getElementById("link").value;
-      const buttonText = document.getElementById("buttonText").value;
-      const pLink = document.getElementById("pLink");
-      const pButton = document.getElementById("pButton");
-      pLink.href = "https://icyaria.github.io/anti-phishing-lab/gotcha.html";
-      pButton.textContent = buttonText || "Πατήστε εδώ";
+      // Ενημερώνει το κουμπί με το custom κείμενο
+      document.getElementById("pButton").textContent = document.getElementById("buttonText").value || "Πατήστε εδώ";
 
+      // Ενημερώνει την εικόνα αν υπάρχει
       const file = document.getElementById("image").files[0];
       const imgContainer = document.getElementById("pImageContainer");
       imgContainer.innerHTML = "";
