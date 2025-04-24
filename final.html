@@ -55,7 +55,16 @@
     <p><strong>Θέμα:</strong> <span id="subject"></span></p>
     <p><strong>Μήνυμα:</strong><br><span id="body"></span></p>
     <div id="imageContainer"></div>
-    <p><a href="gotcha.html" target="_blank" class="btn-link" id="button">Πατήστε εδώ</a></p>
+    <p><a href="gotcha.html" id="pLink" target="_blank">
+      <span id="pButton" class="btn-link">Πατήστε εδώ</span>
+    </a></p>
+    
+    <p style="font-size: 13px; color: #888;">
+      🔗 <strong>Ο σύνδεσμος οδηγεί σε:</strong> 
+      <code id="realLink" style="background:#f4f4f4; padding: 2px 6px; border-radius: 5px;"></code>
+    </p>
+
+<!--     <p><a href="gotcha.html" target="_blank" class="btn-link" id="button">Πατήστε εδώ</a></p> -->
   </div>
 
   <div class="disclaimer">
@@ -69,12 +78,14 @@
     document.getElementById("subject").textContent = data.subject || "";
     document.getElementById("body").innerHTML = (data.body || "").replace(/\n/g, "<br>");
     document.getElementById("button").textContent = data.buttonText || "Πατήστε εδώ";
-
+    document.getElementById("realLink").textContent = document.getElementById("pLink").href;
+    
     if (data.imageSrc) {
       const img = document.createElement("img");
       img.src = data.imageSrc;
       document.getElementById("imageContainer").appendChild(img);
     }
+
   </script>
 </body>
 </html>
