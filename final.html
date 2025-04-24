@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Το Phishing Email μου</title>
+  <title>Το Email μου</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -49,22 +49,21 @@
 </head>
 <body>
   <div class="email-box" id="emailContent">
-    <h2>📧 Εκπαιδευτικό Phishing Email</h2>
+    <h2>📧 Εκπαιδευτικό Email</h2>
     <p><strong>Από:</strong> <span id="from"></span></p>
     <p><strong>Προς:</strong> <span id="to"></span></p>
     <p><strong>Θέμα:</strong> <span id="subject"></span></p>
     <p><strong>Μήνυμα:</strong><br><span id="body"></span></p>
     <div id="imageContainer"></div>
-    <p><a href="gotcha.html" id="pLink" target="_blank">
-      <span id="pButton" class="btn-link">Πατήστε εδώ</span>
-    </a></p>
-
-
-<!--     <p><a href="gotcha.html" target="_blank" class="btn-link" id="button">Πατήστε εδώ</a></p> -->
+    <p>
+      <a href="#" id="pLink" target="_blank">
+        <span id="pButton" class="btn-link">Πατήστε εδώ</span>
+      </a>
+    </p>
   </div>
 
   <div class="disclaimer">
-    ⚠️ <strong>Προσοχή:</strong> Το παραπάνω email είναι <u>απολύτως ψεύτικο</u> και δημιουργήθηκε στο πλαίσιο εκπαιδευτικής δραστηριότητας για την αναγνώριση red flags σε phishing μηνύματα. Μην προσπαθήσετε να το χρησιμοποιήσετε για κανέναν άλλο σκοπό.
+    ⚠️ <strong>Προσοχή:</strong> Το παραπάνω email είναι <u>απολύτως ψεύτικο</u> και δημιουργήθηκε στο πλαίσιο εκπαιδευτικής δραστηριότητας. Δεν έχει καμία αποστολή ούτε επικοινωνία με πραγματικούς οργανισμούς.
   </div>
 
   <script>
@@ -73,15 +72,14 @@
     document.getElementById("to").textContent = data.to || "";
     document.getElementById("subject").textContent = data.subject || "";
     document.getElementById("body").innerHTML = (data.body || "").replace(/\n/g, "<br>");
-    document.getElementById("button").textContent = data.buttonText || "Πατήστε εδώ";
-    document.getElementById("realLink").textContent = document.getElementById("pLink").href;
-    
+    document.getElementById("pButton").textContent = data.buttonText || "Πατήστε εδώ";
+    document.getElementById("pLink").href = data.linkTarget || "suspicious.html";
+
     if (data.imageSrc) {
       const img = document.createElement("img");
       img.src = data.imageSrc;
       document.getElementById("imageContainer").appendChild(img);
     }
-
   </script>
 </body>
 </html>
