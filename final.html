@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Το Email μου</title>
+  <title>Το Phishing Email μου</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,15 +10,14 @@
       padding: 30px;
       max-width: 700px;
       margin: auto;
-    }
-    h2 {
-      color: #1d3557;
+      text-align: center;
     }
     .email-box {
       padding: 20px;
       background-color: #f4f6f8;
       border-radius: 12px;
       margin-bottom: 30px;
+      text-align: left;
     }
     .btn-link {
       display: inline-block;
@@ -28,15 +27,11 @@
       padding: 10px 20px;
       border-radius: 8px;
       text-decoration: none;
+      cursor: pointer;
+      margin-top: 15px;
     }
     .btn-link:hover {
       background-color: #457b9d;
-    }
-    img {
-      max-width: 100%;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
     }
     .disclaimer {
       background-color: #fff3cd;
@@ -44,26 +39,29 @@
       border-left: 5px solid #ffbf00;
       border-radius: 10px;
       font-size: 14px;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
+  <h2>📧 Το Εκπαιδευτικό Phishing Email σου</h2>
+
   <div class="email-box" id="emailContent">
-    <h2>📧 Εκπαιδευτικό Email</h2>
     <p><strong>Από:</strong> <span id="from"></span></p>
     <p><strong>Προς:</strong> <span id="to"></span></p>
     <p><strong>Θέμα:</strong> <span id="subject"></span></p>
     <p><strong>Μήνυμα:</strong><br><span id="body"></span></p>
-    <div id="imageContainer"></div>
     <p>
-      <a href="#" id="pLink" target="_blank">
+      <a href="suspicious.html" id="pLink" target="_blank">
         <span id="pButton" class="btn-link">Πατήστε εδώ</span>
       </a>
     </p>
   </div>
 
+  <button onclick="downloadEmail()" style="background-color: #2a9d8f;">Κατέβασε το Email σου</button>
+
   <div class="disclaimer">
-    ⚠️ <strong>Προσοχή:</strong> Το παραπάνω email είναι <u>απολύτως ψεύτικο</u> και δημιουργήθηκε στο πλαίσιο εκπαιδευτικής δραστηριότητας. Δεν έχει καμία αποστολή ούτε επικοινωνία με πραγματικούς οργανισμούς.
+    ⚠️ Το παρόν email δημιουργήθηκε αποκλειστικά για εκπαιδευτικούς σκοπούς και προσομοιώνει χαρακτηριστικά phishing email.
   </div>
 
   <script>
@@ -73,12 +71,29 @@
     document.getElementById("subject").textContent = data.subject || "";
     document.getElementById("body").innerHTML = (data.body || "").replace(/\n/g, "<br>");
     document.getElementById("pButton").textContent = data.buttonText || "Πατήστε εδώ";
-    document.getElementById("pLink").href = data.linkTarget || "suspicious.html";
+    document.getElementById("pLink").href = "suspicious.html";
 
-    if (data.imageSrc) {
-      const img = document.createElement("img");
-      img.src = data.imageSrc;
-      document.getElementById("imageContainer").appendChild(img);
+    function downloadEmail() {
+      const content = document.getElementById("emailContent").innerHTML;
+      const fullHtml = `
+        <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>Phishing Email Reminder</title>
+          </head>
+          <body style="font-family: Arial, sans-serif; padding: 20px;">
+            ${content}
+            <div style="margin-top:30px; font-size:14px; color:gray;">
+              ⚠️ Αυτό το email δημιουργήθηκε για εκπαιδευτικούς σκοπούς.
+            </div>
+          </body>
+        </html>`;
+
+      const blob = new Blob([fullHtml], { type: "text/html" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "phishing_email.html";
+      link.click();
     }
   </script>
 </body>
