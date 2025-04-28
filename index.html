@@ -35,6 +35,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-bottom: 10px;
     }
     button:hover {
       background-color: #457b9d;
@@ -44,12 +45,6 @@
       padding: 20px;
       background-color: #eef2f3;
       border-radius: 10px;
-    }
-    img.preview-img {
-      max-width: 100%;
-      max-height: 200px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
     }
     .btn-link {
       display: inline-block;
@@ -82,18 +77,15 @@
     <label>Κείμενο Μηνύματος:</label>
     <textarea id="body" rows="5"></textarea>
 
-    <label>Εικόνα (π.χ. ψεύτικο λογότυπο):</label>
-    <input type="file" id="image" accept="image/*">
+    <label>Κείμενο Κουμπιού:</label>
+    <input type="text" id="buttonText" placeholder="Πατήστε εδώ...">
 
     <label>Ψεύτικος Σύνδεσμος (σταθερός):</label>
     <input type="text" value="suspicious.html" readonly>
 
-    <label>Κείμενο Κουμπιού:</label>
-    <input type="text" id="buttonText" placeholder="Πατήστε εδώ...">
-
     <button onclick="generateEmail()">Προβολή Email</button>
 
-    <button onclick="finishEmail()" style="background-color:#2a9d8f; margin-top:10px;">Τέλος</button>
+    <button onclick="finishEmail()" style="background-color:#2a9d8f;">Τέλος</button>
 
     <div class="preview" id="preview" style="display: none;">
       <h3>📬 Προεπισκόπηση Email</h3>
@@ -101,8 +93,11 @@
       <p><strong>Προς:</strong> <span id="pTo"></span></p>
       <p><strong>Θέμα:</strong> <span id="pSubject"></span></p>
       <p><strong>Μήνυμα:</strong><br><span id="pBody"></span></p>
-      <div id="pImageContainer"></div>
-      <p><a href="suspicious.html" id="pLink" target="_blank"><span id="pButton" class="btn-link">Πατήστε εδώ</span></a></p>
+      <p>
+        <a href="suspicious.html" id="pLink" target="_blank">
+          <span id="pButton" class="btn-link">Πατήστε εδώ</span>
+        </a>
+      </p>
     </div>
   </div>
 
@@ -114,52 +109,22 @@
       document.getElementById("pTo").textContent = document.getElementById("to").value;
       document.getElementById("pSubject").textContent = document.getElementById("subject").value;
       document.getElementById("pBody").innerHTML = document.getElementById("body").value.replace(/\n/g, "<br>");
-
-      // Ενημερώνει το κουμπί με το custom κείμενο
       document.getElementById("pButton").textContent = document.getElementById("buttonText").value || "Πατήστε εδώ";
+    }
 
-      // Ενημερώνει την εικόνα αν υπάρχει
-      const file = document.getElementById("image").files[0];
-      const imgContainer = document.getElementById("pImageContainer");
-      imgContainer.innerHTML = "";
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.createElement("img");
-          img.src = e.target.result;
-          img.className = "preview-img";
-          imgContainer.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      }
-    }  
-    
     function finishEmail() {
-    const data = {
-      from: document.getElementById("from").value,
-      to: document.getElementById("to").value,
-      subject: document.getElementById("subject").value,
-      body: document.getElementById("body").value,
-      buttonText: document.getElementById("buttonText").value,
-    };
-
-    const file = document.getElementById("image").files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        data.imageSrc = e.target.result;
-        localStorage.setItem("finalEmail", JSON.stringify(data));
-        window.open("final.html", "_blank");
+      const data = {
+        from: document.getElementById("from").value,
+        to: document.getElementById("to").value,
+        subject: document.getElementById("subject").value,
+        body: document.getElementById("body").value,
+        buttonText: document.getElementById("buttonText").value,
       };
-      reader.readAsDataURL(file);
-    } else {
-      data.imageSrc = null;
+
       localStorage.setItem("finalEmail", JSON.stringify(data));
       window.open("final.html", "_blank");
     }
-  }
-    
   </script>
-  
 </body>
 </html>
+
