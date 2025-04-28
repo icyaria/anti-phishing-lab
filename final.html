@@ -74,27 +74,39 @@
     document.getElementById("pLink").href = "suspicious.html";
 
     function downloadEmail() {
-      const content = document.getElementById("emailContent").innerHTML;
-      const fullHtml = `
-        <html>
-          <head>
-            <meta charset="UTF-8">
-            <title>Phishing Email Reminder</title>
-          </head>
-          <body style="font-family: Arial, sans-serif; padding: 20px;">
-            ${content}
-            <div style="margin-top:30px; font-size:14px; color:gray;">
-              ⚠️ Αυτό το email δημιουργήθηκε για εκπαιδευτικούς σκοπούς.
-            </div>
-          </body>
-        </html>`;
+    const content = `
+      <p><strong>Από:</strong> ${data.from}</p>
+      <p><strong>Προς:</strong> ${data.to}</p>
+      <p><strong>Θέμα:</strong> ${data.subject}</p>
+      <p><strong>Μήνυμα:</strong><br>${(data.body || "").replace(/\n/g, "<br>")}</p>
+      <p>
+        <a href="https://icyaria.github.io/anti-phishing-lab/suspicious.html" target="_blank" style="background-color: #1d3557; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">
+          ${data.buttonText || "Πατήστε εδώ"}
+        </a>
+      </p>
+    `;
+  
+    const fullHtml = `
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Phishing Email Reminder</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; padding: 20px;">
+          ${content}
+          <div style="margin-top:30px; font-size:14px; color:gray;">
+            ⚠️ Αυτό το email δημιουργήθηκε για εκπαιδευτικούς σκοπούς.
+          </div>
+        </body>
+      </html>`;
+  
+    const blob = new Blob([fullHtml], { type: "text/html" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "phishing_email.html";
+    link.click();
+  }
 
-      const blob = new Blob([fullHtml], { type: "text/html" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "phishing_email.html";
-      link.click();
-    }
   </script>
 </body>
 </html>
